@@ -1,48 +1,67 @@
-import React, { useState, useContext } from "react";
-import { StateContext } from "../App";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components/macro";
-import { useTheme } from "@material-ui/core/styles";
+import { colors } from "../globalStyles";
 
-const TextFieldStyles = styled(TextField)``;
+const TextFieldStyles = styled(TextField)`
+  .MuiFormLabel-root,
+  .MuiFormLabel-root.Mui-focused,
+  fieldset legend span {
+    color: ${colors.primary};
+  }
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: ${colors.primary};
+  }
+`;
 
-const Form = () => {
-  const theme = useTheme();
-  const state = useContext(StateContext);
+const ButtonStyles = styled(Button)`
+  background-color: ${colors.primary};
+  color: white;
+  &:hover {
+    background-color: ${colors.primaryLT};
+  }
+`;
 
-  const [formState, setFormState] = useState(state.formState);
+const Form = props => {
+  const state = props.state;
+  const setState = props.setState;
 
-  console.log(formState);
+  const handleSubmit = e => {
+    e.preventDefault();
+    setState({ ...state, isSubmitting: true });
+  };
 
   return (
-    <form autoComplete="off">
+    <form autoComplete="off" onSubmit={handleSubmit}>
       <TextFieldStyles
         label="First Name"
         variant="outlined"
-        color={theme.primary.main}
+        onChange={e => setState({ ...state, firstName: e.target.value })}
       />
       <TextFieldStyles
         label="Last Name"
         variant="outlined"
-        color={theme.primary.main}
+        onChange={e => setState({ ...state, lastName: e.target.value })}
       />
       <TextFieldStyles
         label="Company Name"
         variant="outlined"
-        color={theme.primary.main}
+        onChange={e => setState({ ...state, companyName: e.target.value })}
       />
       <TextFieldStyles
         label="Email Address"
         variant="outlined"
-        color={theme.primary.main}
+        onChange={e => setState({ ...state, email: e.target.value })}
       />
       <TextFieldStyles
         label="Phone Number"
         variant="outlined"
-        color={theme.primary.main}
+        onChange={e => setState({ ...state, phone: e.target.value })}
       />
-      <Button variant="contained">Submit</Button>
+      <ButtonStyles variant="contained" type="submit">
+        Submit
+      </ButtonStyles>
     </form>
   );
 };
