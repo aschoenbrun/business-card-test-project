@@ -1,42 +1,20 @@
 import React, { useContext, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import styled from "styled-components/macro";
-import { colors } from "../globalStyles";
+import { TextFieldStyles, ButtonStyles } from "../globalStyles";
 import { StateContext } from "./Content";
 
-const TextFieldStyles = styled(TextField)`
-  .MuiFormLabel-root,
-  .MuiFormLabel-root.Mui-focused,
-  fieldset legend span {
-    color: ${colors.primary};
-  }
-  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: ${colors.primary};
-  }
-`;
-
-const ButtonStyles = styled(Button)`
-  background-color: ${colors.primary};
-  color: white;
-  &:hover {
-    background-color: ${colors.primaryLT};
-  }
-`;
-
-const Form = props => {
+const Form = () => {
   const [state, setState] = useContext(StateContext);
 
   const handleSubmit = e => {
     e.preventDefault();
-    setState({ ...state, isSubmitting: true });
+    setState({ ...state, formSubmitted: true, tab: "tab2" });
   };
 
   useEffect(() => {
-    if (state.isSubmitting) {
+    if (state.formSubmitted) {
       console.log(state);
     }
-  }, [state.isSubmitting]);
+  });
 
   return (
     <form autoComplete="off" onSubmit={handleSubmit}>
