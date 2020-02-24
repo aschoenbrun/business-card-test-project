@@ -1,20 +1,33 @@
 import React, { useContext, useEffect } from "react";
 import { TextFieldStyles, ButtonStyles } from "../globalStyles";
 import { StateContext } from "./Content";
+import axios from "axios";
 
 const Form = () => {
   const [state, setState] = useContext(StateContext);
 
   const handleSubmit = e => {
     e.preventDefault();
-    setState({ ...state, formSubmitted: true, tab: "tab2" });
+    axios
+      .get(
+        `http://apilayer.net/api/check?access_key=8cbbb9e1c781a92d8faf14c20376d3a4&email=${state.email}`
+      )
+      .then(res => {
+        console.log(res);
+        if (res.data) {
+          setState({ ...state, formSubmitted: true, tab: "tab2" });
+        } else {
+          setState({ ...state, emailError: true });
+        }
+      })
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
     if (state.formSubmitted) {
       console.log(state);
     }
-  });
+  }, [state]);
 
   return (
     <form autoComplete="off" onSubmit={handleSubmit}>
@@ -36,6 +49,7 @@ const Form = () => {
       <TextFieldStyles
         label="Email Address"
         variant="outlined"
+        error={state.emailError ? true : false}
         onChange={e => setState({ ...state, email: e.target.value })}
       />
       <TextFieldStyles

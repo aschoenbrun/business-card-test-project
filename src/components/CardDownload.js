@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
+import { TextFieldStyles, ButtonStyles } from "../globalStyles";
 import { StateContext } from "./Content";
 
 const CardDownload = () => {
@@ -7,12 +8,15 @@ const CardDownload = () => {
   const cardImage = useRef("");
 
   useEffect(() => {
-    cardImage.current.src = state.cardData;
-  }, [state.cardData]);
+    if (state.cardData) {
+      cardImage.current.src = state.cardData;
+    }
+  }, [state]);
 
   return (
     <>
       <img alt="my card" ref={cardImage} />
+      <ButtonStyles>Download</ButtonStyles>
     </>
   );
 };
