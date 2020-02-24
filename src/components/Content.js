@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Container from "@material-ui/core/Container";
 import Banner from "./Banner";
 import Form from "./Form";
 
+export const StateContext = React.createContext();
+
 const Content = () => {
-  const [formState, setFormState] = useState({
+  const state = useState({
     firstName: "",
     lastName: "",
     companyName: "",
     email: "",
     phone: "",
-    isSubmitting: false
+    isSubmitting: false,
+    tab: "tab1"
   });
-  const [tab, setTab] = useState("tab1");
-  useEffect(() => {
-    console.log(formState);
-  }, [formState]);
 
   return (
-    <Container>
-      <Banner />
-      {/*<TabBar tab={tab}/>*/}
-      <Form state={formState} setState={setFormState} />
-    </Container>
+    <StateContext.Provider value={state}>
+      <Container>
+        <Banner />
+        {/*<TabBar tab={tab}/>*/}
+        <Form />
+      </Container>
+    </StateContext.Provider>
   );
 };
 

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components/macro";
 import { colors } from "../globalStyles";
+import { StateContext } from "./Content";
 
 const TextFieldStyles = styled(TextField)`
   .MuiFormLabel-root,
@@ -24,13 +25,18 @@ const ButtonStyles = styled(Button)`
 `;
 
 const Form = props => {
-  const state = props.state;
-  const setState = props.setState;
+  const [state, setState] = useContext(StateContext);
 
   const handleSubmit = e => {
     e.preventDefault();
     setState({ ...state, isSubmitting: true });
   };
+
+  useEffect(() => {
+    if (state.isSubmitting) {
+      console.log(state);
+    }
+  }, [state.isSubmitting]);
 
   return (
     <form autoComplete="off" onSubmit={handleSubmit}>
